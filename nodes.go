@@ -178,8 +178,7 @@ func NodesData(part string) []byte {
 }
 
 func SlurmGetTotal() float64 {
-	// cmd := exec.Command("bash", "-c", "\"/usr/bin/scontrol show nodes -o | grep -c 'NodeName=[a-z]*[0-9]*'\"")
-	cmd := exec.Command("/usr/bin/scontrol", "show", "nodes", "-o", "| grep", "-c", "'NodeName=[a-z]*[0-9]*'")
+	cmd := exec.Command("/usr/bin/scontrol", "show", "nodes", "-o", "| grep", "-c", "'NodeName=[a-z]*[0-9]*'", "|| true")
 	cmd.Env = append(os.Environ(), "PATH=/usr/bin:/bin:/usr/sbin:/sbin")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
