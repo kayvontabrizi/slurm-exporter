@@ -160,7 +160,7 @@ func ParseNodesMetrics(input []byte) *NodesMetrics {
 
 // Execute the sinfo command and return its output
 func NodesData(part string) []byte {
-	cmd := exec.Command("sinfo", "-h", "-o %D|%T|%b", "-p", part, "| sort", "| uniq")
+	cmd := exec.Command("/usr/bin/sinfo", "-h", "-o %D|%T|%b", "-p", part, "| sort", "| uniq")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Fatal(err)
@@ -176,7 +176,7 @@ func NodesData(part string) []byte {
 }
 
 func SlurmGetTotal() float64 {
-	cmd := exec.Command("bash", "-c", "scontrol show nodes -o | grep -c NodeName=[a-z]*[0-9]*")
+	cmd := exec.Command("bash", "-c", "/usr/bin/scontrol show nodes -o | grep -c NodeName=[a-z]*[0-9]*")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Fatal(err)
@@ -199,7 +199,7 @@ func SlurmGetTotal() float64 {
 }
 
 func SlurmGetPartitions() []string {
-	cmd := exec.Command("sinfo", "-h", "-o %R", "| sort", "| uniq")
+	cmd := exec.Command("/usr/bin/sinfo", "-h", "-o %R", "| sort", "| uniq")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Fatal(err)

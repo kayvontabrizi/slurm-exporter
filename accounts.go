@@ -27,7 +27,7 @@ import (
 )
 
 func AccountsData() []byte {
-	cmd := exec.Command("squeue", "-a", "-r", "-h", "-o %A|%a|%T|%C")
+	cmd := exec.Command("/usr/bin/squeue", "-a", "-r", "-h", "-o %A|%a|%T|%C")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Fatal(err)

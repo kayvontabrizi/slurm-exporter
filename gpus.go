@@ -39,7 +39,7 @@ func ParseAllocatedGPUs() float64 {
 	var num_gpus = 0.0
 
 	args := []string{"-a", "-X", "--format=Allocgres", "--state=RUNNING", "--noheader", "--parsable2"}
-	output := string(Execute("sacct", args))
+	output := string(Execute("/usr/bin/sacct", args))
 	if len(output) > 0 {
 		for _, line := range strings.Split(output, "\n") {
 			if len(line) > 0 {
@@ -58,7 +58,7 @@ func ParseTotalGPUs() float64 {
 	var num_gpus = 0.0
 
 	args := []string{"-h", "-o \"%n %G\""}
-	output := string(Execute("sinfo", args))
+	output := string(Execute("/usr/bin/sinfo", args))
 	if len(output) > 0 {
 		for _, line := range strings.Split(output, "\n") {
 			if len(line) > 0 {
