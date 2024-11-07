@@ -19,6 +19,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/common/log"
 	"io/ioutil"
+	"os"
 	"os/exec"
 	"strings"
 	"strconv"
@@ -38,7 +39,7 @@ func GPUsGetMetrics() *GPUsMetrics {
 func ParseAllocatedGPUs() float64 {
 	var num_gpus = 0.0
 
-	args := []string{"-a", "-X", "--format=Allocgres", "--state=RUNNING", "--noheader", "--parsable2"}
+	args := []string{"-a", "-X", "--format=AllocTRES", "--state=RUNNING", "--noheader", "--parsable2"}
 	output := string(Execute("/usr/bin/sacct", args))
 	if len(output) > 0 {
 		for _, line := range strings.Split(output, "\n") {
@@ -89,6 +90,7 @@ func ParseGPUsMetrics() *GPUsMetrics {
 // Execute the sinfo command and return its output
 func Execute(command string, arguments []string) []byte {
 	cmd := exec.Command(command, arguments...)
+	cmd.Env = append(os.Environ(), "PATH=/usr/bin:/bin:/usr/sbin:/sbin")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Fatal(err)

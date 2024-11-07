@@ -18,6 +18,7 @@ package main
 import (
 	"io/ioutil"
 	"log"
+	"os"
 	"os/exec"
 	"regexp"
 	"strconv"
@@ -27,7 +28,8 @@ import (
 )
 
 func UsersData() []byte {
-	cmd := exec.Command("/usr/bin/squeue", "-a", "-r", "-h", "-o %A|%u|%T|%C")
+	cmd := exec.Command("/usr/bin/squeue", "-a", "-r", "-h", "-o \"%A|%u|%T|%C\"")
+	cmd.Env = append(os.Environ(), "PATH=/usr/bin:/bin:/usr/sbin:/sbin")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Fatal(err)

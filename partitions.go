@@ -17,6 +17,7 @@ package main
 
 import (
         "io/ioutil"
+	"os"
         "os/exec"
         "log"
         "strings"
@@ -25,7 +26,8 @@ import (
 )
 
 func PartitionsData() []byte {
-        cmd := exec.Command("/usr/bin/sinfo", "-h", "-o%R,%C")
+        cmd := exec.Command("/usr/bin/sinfo", "-h", "\"-o%R,%C\"")
+        cmd.Env = append(os.Environ(), "PATH=/usr/bin:/bin:/usr/sbin:/sbin")
         stdout, err := cmd.StdoutPipe()
         if err != nil {
                 log.Fatal(err)
@@ -42,6 +44,7 @@ func PartitionsData() []byte {
 
 func PartitionsPendingJobsData() []byte {
         cmd := exec.Command("/usr/bin/squeue","-a","-r","-h","-o%P","--states=PENDING")
+        cmd.Env = append(os.Environ(), "PATH=/usr/bin:/bin:/usr/sbin:/sbin")
         stdout, err := cmd.StdoutPipe()
         if err != nil {
                 log.Fatal(err)

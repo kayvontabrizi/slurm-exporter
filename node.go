@@ -17,6 +17,7 @@ package main
 
 import (
 	"log"
+	"os"
 	"os/exec"
 	"sort"
 	"strconv"
@@ -83,6 +84,7 @@ func ParseNodeMetrics(input []byte) map[string]*NodeMetrics {
 // It returns the output of the sinfo command
 func NodeData() []byte {
 	cmd := exec.Command("/usr/bin/sinfo", "-h", "-N", "-O", "NodeList,AllocMem,Memory,CPUsState,StateLong")
+	cmd.Env = append(os.Environ(), "PATH=/usr/bin:/bin:/usr/sbin:/sbin")
 	out, err := cmd.Output()
 	if err != nil {
 		log.Fatal(err)

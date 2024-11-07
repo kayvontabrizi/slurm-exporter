@@ -17,6 +17,7 @@ package main
 
 import (
         "io/ioutil"
+	"os"
         "os/exec"
         "log"
         "strings"
@@ -26,6 +27,7 @@ import (
 
 func FairShareData() []byte {
         cmd := exec.Command( "/usr/bin/sshare", "-n", "-P", "-o", "account,fairshare" )
+        cmd.Env = append(os.Environ(), "PATH=/usr/bin:/bin:/usr/sbin:/sbin")
         stdout, err := cmd.StdoutPipe()
         if err != nil {
                 log.Fatal(err)

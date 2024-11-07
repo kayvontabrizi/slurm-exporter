@@ -18,6 +18,7 @@ package main
 import (
 	"io/ioutil"
 	"log"
+	"os"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -161,6 +162,7 @@ func ParseQueueMetrics(input []byte) *QueueMetrics {
 // Execute the squeue command and return its output
 func QueueData() []byte {
 	cmd := exec.Command("/usr/bin/squeue", "-h", "-o %P,%T,%C,%r,%u")
+	cmd.Env = append(os.Environ(), "PATH=/usr/bin:/bin:/usr/sbin:/sbin")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Fatal(err)

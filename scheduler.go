@@ -17,6 +17,7 @@ package main
 
 import (
 	"io/ioutil"
+	"os"
 	"os/exec"
 	"regexp"
 	"strconv"
@@ -57,6 +58,7 @@ type SchedulerMetrics struct {
 // Execute the sdiag command and return its output
 func SchedulerData() []byte {
 	cmd := exec.Command("/usr/bin/sdiag")
+	cmd.Env = append(os.Environ(), "PATH=/usr/bin:/bin:/usr/sbin:/sbin")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Fatal(err)
